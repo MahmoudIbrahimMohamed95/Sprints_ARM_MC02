@@ -1,7 +1,20 @@
 #ifndef EXTI_H_
 #define EXTI_H_
 
+
+/**********************************************************************************************************************************************
+
+* GLOBAL VARIABLES AND MACROS
+
+**********************************************************************************************************************************************/
+
 static volatile void(*Exti_CallBack[6])(void)={NULL_PTR, NULL_PTR, NULL_PTR, NULL_PTR, NULL_PTR, NULL_PTR};
+
+
+/****************************************************************************************************************************
+*	GLOBAL DATA TYPES AND STRUCTURES
+****************************************************************************************************************************/
+
 
 typedef  void(*Exti_NotificationType)(void);
 
@@ -30,6 +43,50 @@ typedef struct{
     Exti_NotificationType   Exti_Notification;
 
 }Exti_ConfigType;
+
+
+/****************************************************************************************************************************
+*	GLOBAL FUNCTION PROTOTYPES
+****************************************************************************************************************************/
+
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Exti_Init(const Exti_ConfigType* ConfigPtr)
+*	\Description     :  function to set External Interrupts Configurations 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	const Exti_ConfigType*ConfigPtr "Pointer to struct"
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+ 
+void Exti_Init(const Exti_ConfigType* ConfigPtr);
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Exti_EnableInterrupt(Exti_ChannelType Channel)
+*	\Description     :  function to enable External Interrupt. 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Exti_ChannelType Channel
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+ 
+
+void Exti_EnableInterrupt(Exti_ChannelType Channel);
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Exti_DisableInterrupt(Exti_ChannelType Channel)
+*	\Description     :  function to disable External Interrupt. 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Exti_ChannelType Channel
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+ 
+
+void Exti_DisableInterrupt(Exti_ChannelType Channel);
 
 
 #endif

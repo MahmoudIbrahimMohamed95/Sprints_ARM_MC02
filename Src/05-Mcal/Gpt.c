@@ -1,9 +1,40 @@
+/******************************************************************************************************************************
+*	FILE DESCRIPTION
+*	-------------------------------------------------------------------------------------------------------------------------
+*				\File 	 : Gpt.c
+
+*				\*brief	 :	Gpt Source File
+*
+*				\*details: define Global Timer API's    
+*****************************************************************************************************************************/
+
+/****************************************************************************************************************************
+
+*	INCLUDES
+
+****************************************************************************************************************************/
 
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
 #include "Gpt.h"
 #include "Gpt_Config.h"
 #include "Gpt_Private.h"
+
+
+/****************************************************************************************************************************
+*	GLOBAL FUNCTION PROTOTYPES
+****************************************************************************************************************************/
+
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to set Timer Configurations 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	const Gpt_ConfigType*ConfigPtr "Pointer to struct"
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 
 void Gpt_Init(const Gpt_ConfigType*ConfigPtr){
 	
@@ -39,6 +70,15 @@ void Gpt_Init(const Gpt_ConfigType*ConfigPtr){
 
 }
 
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Disable Timer Interrupts in Run Time 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	Gpt_ChannelType Channel	"Timer ID "
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 
 void Gpt_DisableNotification(Gpt_ChannelType Channel){
 	
@@ -46,6 +86,15 @@ void Gpt_DisableNotification(Gpt_ChannelType Channel){
 	
 	CLR_BIT(Gpt->GPTMIMR  , 0);
 }
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Enable Timer Interrupts in Run Time 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	Gpt_ChannelType Channel	"Timer ID "
+*	\Parameters (out):	void
+*************************************************************************************************************************/
 
 void Gpt_EnableNotification(Gpt_ChannelType Channel){
 	
@@ -56,6 +105,15 @@ void Gpt_EnableNotification(Gpt_ChannelType Channel){
 }
 
 /* #define Bit_Banding(PERIPHRAL_OFFSET , REGISTER_OFFSET , BIT_NUMBER)	((volatile uint32*)(BIT_BAND_ALIAS_BASE_ADDRESS + ((PERIPHRAL_OFFSET + REGISTER_OFFSET) * 32 )))[BIT_NUMBER]*/
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Start Timer Count 
+*	\sync\Async      :	ASynchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Gpt_ChannelType Channel	"Timer ID " , Gpt_ValueType Value "No.of Counts in Tick"
+*	\Parameters (out):	void
+*************************************************************************************************************************/
 
 
 void Gpt_StartTimer(Gpt_ChannelType Channel , Gpt_ValueType Value){
@@ -73,6 +131,15 @@ void Gpt_StartTimer(Gpt_ChannelType Channel , Gpt_ValueType Value){
 	BIT_BANDING(Gpt_Offset , 0x01C , 0)=1;			/*SET_BIT( Gpt->GPTMRIS , 0)*/
 }
 
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Stop Timer Count 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Gpt_ChannelType Channel	"Timer ID " 
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 void Gpt_StopTimer(Gpt_ChannelType Channel){
 
 	volatile Gpt_RegsType*Gpt= (volatile Gpt_RegsType*)TimerBaseAddress[Channel];
@@ -83,7 +150,14 @@ void Gpt_StopTimer(Gpt_ChannelType Channel){
 
 }
 
-
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Get Time Elapsed from Begaining of Count  
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Gpt_ChannelType Channel	"Timer ID " 
+*	\Parameters (out):	Gpt_ValueType  "uint 32"
+*************************************************************************************************************************/
 
 Gpt_ValueType Gpt_GetTimeElapsed(Gpt_ChannelType Channel){
 
@@ -116,6 +190,15 @@ Gpt_ValueType Gpt_GetTimeElapsed(Gpt_ChannelType Channel){
 	}
 
 }
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to get Remaining Time 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Gpt_ChannelType Channel	"Timer ID "  
+*	\Parameters (out):	Gpt_ValueType Value "No.of Counts in Tick"
+*************************************************************************************************************************/
 
 Gpt_ValueType Gpt_GetTimeRemaining(Gpt_ChannelType Channel){
 
@@ -154,6 +237,15 @@ Gpt_ValueType Gpt_GetTimeRemaining(Gpt_ChannelType Channel){
 
 /* TIMER0_32_64 IS A PREDEFINED TIMER ASSUMING SYS CLOCK IS 16MHZ */
 
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Initialize the Predefined Timers which is defined before Run Time 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	Gpt_PredefTimerType PredefTimer "fixed Timer ID which is Timer0_32_64 "  
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 void Gpt_PredefTimerInit(Gpt_PredefTimerType PredefTimer){
 	
 	volatile Gpt_RegsType*Gpt= (volatile Gpt_RegsType*)TimerBaseAddress[6];
@@ -186,6 +278,17 @@ void Gpt_PredefTimerInit(Gpt_PredefTimerType PredefTimer){
 
 }
 	
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to get the value of the Predefined Timers which is defined before Run Time 
+*	\sync\Async      :	ASynchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	Gpt_PredefTimerType PredefTimer "fixed Timer ID which is Timer0_32_64 "  & uint32*TimeValuePtr "Pointer to recieve timer value"  
+*	\Parameters (out):	l_timerValue
+*	\Return          : std_ReturnType: E_OK
+									   E_NOK
+*************************************************************************************************************************/
+
 Std_ReturnType Gpt_GetPredefTimerValue(Gpt_PredefTimerType PredefTimer , uint32*TimeValuePtr){
 
 	volatile Gpt_RegsType*Gpt= (volatile Gpt_RegsType*)TimerBaseAddress[6];
@@ -241,8 +344,14 @@ Std_ReturnType Gpt_GetPredefTimerValue(Gpt_PredefTimerType PredefTimer , uint32*
 		
 }	
 
-
-
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  TIMER_ISR's 
+*	\sync\Async      :	ASynchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	void
+*	\Parameters (out):	void
+*************************************************************************************************************************/
 
 void TIMER0A_Handler(void){
 
@@ -352,3 +461,6 @@ void WTIMER5A_Handler(void){
 
 }
 
+/***************************************************************************************************************************
+*	END OF FILE :Gpt.c
+***************************************************************************************************************************/

@@ -3,6 +3,21 @@
 #include "Exti_Config.h"
 #include "Exti_Private.h"
 #include "Exti.h"
+
+/****************************************************************************************************************************
+*	GLOBAL FUNCTION PROTOTYPES
+****************************************************************************************************************************/
+
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Exti_Init(const Exti_ConfigType* ConfigPtr)
+*	\Description     :  function to set External Interrupts Configurations 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	const Exti_ConfigType*ConfigPtr "Pointer to struct"
+*	\Parameters (out):	void
+*************************************************************************************************************************/
  
 void Exti_Init(const Exti_ConfigType* ConfigPtr){
 
@@ -201,6 +216,18 @@ void Exti_Init(const Exti_ConfigType* ConfigPtr){
 
 }
 
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Exti_EnableInterrupt(Exti_ChannelType Channel)
+*	\Description     :  function to enable External Interrupt. 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Exti_ChannelType Channel
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+ 
+
 void Exti_EnableInterrupt(Exti_ChannelType Channel){
 
     if(Channel <= 7){
@@ -227,6 +254,18 @@ void Exti_EnableInterrupt(Exti_ChannelType Channel){
 
 }
 
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Exti_DisableInterrupt(Exti_ChannelType Channel)
+*	\Description     :  function to disable External Interrupt. 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Exti_ChannelType Channel
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+ 
+
 void Exti_DisableInterrupt(Exti_ChannelType Channel){
 
     if(Channel <= 7){
@@ -252,6 +291,19 @@ void Exti_DisableInterrupt(Exti_ChannelType Channel){
 		}
 
 } 
+
+
+
+
+/****************************************************************************************************************************
+*	\syntax          :	
+*	\Description     :  GPIO's ISR HAndlers 
+*	\sync\Async      :	ASynchronous
+*	\Reentrancy      : 	Based on if you enable Interrupt Nesting
+*	\Parameters (in) :	void
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+ 
 
 void GPIOA_Handler(void){
 

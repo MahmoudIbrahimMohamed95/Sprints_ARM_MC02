@@ -3,9 +3,9 @@
 *	-------------------------------------------------------------------------------------------------------------------------
 *				\File 	 : Dio.c
 
-*				\*brief	 :
+*				\*brief	 :	DIO Source File
 *
-*				\*details:
+*				\*details: define Global API's used to Read, Write ,Get, Flip any Channel   
 *****************************************************************************************************************************/
 
 
@@ -23,6 +23,53 @@
 /* #define BIT_BANDING(PERIPHRAL_OFFSET , REGISTER_OFFSET , BIT_NUMBER)	((volatile uint32*)((BIT_BAND_ALIAS_BASE_ADDRESS) + (((PERIPHRAL_OFFSET) + (REGISTER_OFFSET)) * (32) )))[BIT_NUMBER]*/
 
 
+/****************************************************************************************************************************
+
+*	API Implementation:
+
+****************************************************************************************************************************/
+
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to raed any DIO Channel  which takes ID of Channel and return level 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	DIO Channel Type "Enum"
+*	\Parameters (out):	DIO_LevelType
+*************************************************************************************************************************/
+Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId){
+
+	if(ChannelId <= 42){
+		if(ChannelId <= 7){
+			return 	BIT_BANDING(APB_GPIO_PORTA_OFFSET , (GPIODATA_OFFSET+0x3FC) , ChannelId);
+		}
+		else if(ChannelId <= 15){
+			return 	BIT_BANDING(APB_GPIO_PORTB_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-8));
+		}
+		else if(ChannelId <= 23){
+			return 	BIT_BANDING(APB_GPIO_PORTC_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-16));
+		}
+		else if(ChannelId <= 31){
+			return 	BIT_BANDING(APB_GPIO_PORTD_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-24));
+		}
+		else if(ChannelId <= 37){
+			return 	BIT_BANDING(APB_GPIO_PORTE_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-32));
+		}
+		else if(ChannelId <= 42){
+			return 	BIT_BANDING(APB_GPIO_PORTF_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-38));
+		}
+		else{
+			;  
+		}
+	}
+	
+}	
+
+
+/****************************************************************************************************************************
+													ANOTHER IMPLEMINTATION
+****************************************************************************************************************************/
 /*
 Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId){
 
@@ -87,37 +134,14 @@ Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId){
 */
 
 /****************************************************************************************************************************
-													ANOTHER IMPLEMINTATION
-****************************************************************************************************************************/
-
-Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId){
-
-	if(ChannelId <= 42){
-		if(ChannelId <= 7){
-			return 	BIT_BANDING(APB_GPIO_PORTA_OFFSET , (GPIODATA_OFFSET+0x3FC) , ChannelId);
-		}
-		else if(ChannelId <= 15){
-			return 	BIT_BANDING(APB_GPIO_PORTB_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-8));
-		}
-		else if(ChannelId <= 23){
-			return 	BIT_BANDING(APB_GPIO_PORTC_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-16));
-		}
-		else if(ChannelId <= 31){
-			return 	BIT_BANDING(APB_GPIO_PORTD_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-24));
-		}
-		else if(ChannelId <= 37){
-			return 	BIT_BANDING(APB_GPIO_PORTE_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-32));
-		}
-		else if(ChannelId <= 42){
-			return 	BIT_BANDING(APB_GPIO_PORTF_OFFSET , (GPIODATA_OFFSET+0x3FC) , (ChannelId-38));
-		}
-		else{
-			;  
-		}
-	}
-	
-}	
-
+*	\syntax:	
+*	\Description     :  function to write on any Channel"Pin" which takes Pin no. and level 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Channel ID "of type Dio_ChannelType" & DIO Level "of type Dio_Level Type"  
+*	\Parameters (out):	void
+*	\Return value	 :	void
+*************************************************************************************************************************/
 
 
 void DIO_WriteChannel(Dio_ChannelType ChannelId , Dio_LevelType Level){
@@ -180,6 +204,14 @@ void DIO_WriteChannel(Dio_ChannelType ChannelId , Dio_LevelType Level){
 	
 	}
 }
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to read Port"all of it's Pins Level" 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Port ID "of type Dio_PortType"   
+*	\Parameters (out):	Dio_PortLevel
+*************************************************************************************************************************/
 
 	
 Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId){
@@ -196,6 +228,15 @@ Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId){
 	}
 
 }
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to write on Port "all of it's Pin" which takes Port Id. and level 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Port ID  & Port Level 
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 
 void Dio_WritePort(Dio_PortType PortId , Dio_PortLevelType Level){
 	
@@ -211,6 +252,14 @@ void Dio_WritePort(Dio_PortType PortId , Dio_PortLevelType Level){
 	}
 	
 }
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to flip any Channel"Pin" which takes Pin Id 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Channel ID  
+*	\Parameters (out):	Dio_levelType
+*************************************************************************************************************************/
 
 Dio_LevelType Dio_FlipChannel(Dio_ChannelType ChannelId){
 	
@@ -313,4 +362,7 @@ Dio_LevelType Dio_FlipChannel(Dio_ChannelType ChannelId){
 	}		
 
 }
+/***************************************************************************************************************************
+*	END OF FILE :Gpio_Dio.c
+***************************************************************************************************************************/
 

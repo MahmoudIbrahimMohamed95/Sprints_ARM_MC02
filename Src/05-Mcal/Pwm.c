@@ -1,7 +1,39 @@
+/*****************************************************************************************************************************
+*FILE DESCRIPTION
+*-----------------------------------------------------------------------------------------------------------------------------
+*		FILE: Pwm.c
+
+*	Module:   PWM.c
+
+*DESCRIPTION: Source file for PWM timer Periphral interface
+
+*
+*****************************************************************************************************************************/
+
+
+/****************************************************************************************************************************
+
+*	INCLUDES
+
+*****************************************************************************************************************************/
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
 #include "Pwm.h"
 #include "Pwm_Private.h"
+
+
+/****************************************************************************************************************************
+*	GLOBAL FUNCTION PROTOTYPES
+****************************************************************************************************************************/
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to set Timer Configurations 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	const Gpt_ConfigType*ConfigPtr "Pointer to struct"
+*	\Parameters (out):	void
+*************************************************************************************************************************/
 
 void Pwm_Init(const Pwm_ConfigType* ConfigPtr){
  
@@ -28,6 +60,15 @@ void Pwm_Init(const Pwm_ConfigType* ConfigPtr){
 
 }
 
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Start Timer Count 
+*	\sync\Async      :	ASynchronous
+*	\Reentrancy      : non_Reentrant
+*	\Parameters (in) :	Pwm_ChannelType Channel	"Timer ID " , Gpt_ValueType Value "No.of Counts in Tick"
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 void Pwm_StartTimer(Pwm_ChannelType Channel , Pwm_ValueType Value , Pwm_ValueType MatchValue){
 
 	volatile Gpt_RegsType*Pwm= (volatile Gpt_RegsType*)Pwm_TimerBaseAddress[Channel];
@@ -42,6 +83,17 @@ void Pwm_StartTimer(Pwm_ChannelType Channel , Pwm_ValueType Value , Pwm_ValueTyp
 	(BIT_BANDING(Pwm_Offset , 0x00C , 0))=1;                     /*SET_BIT( Pwm->GPTMCTL ,0).......Start timer.*/
 }
 
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Set Match Value Timer Count according to desired Duty cycle "recieve No. of ticks from user" 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Pwm_ChannelType :Channel	"Timer ID " & Pwm_ValueType: Match value 
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
+
 void Pwm_SetMatchValue(Pwm_ChannelType Channel , Pwm_ValueType MatchValue){
 
 		volatile Gpt_RegsType*Pwm= (volatile Gpt_RegsType*)Pwm_TimerBaseAddress[Channel];
@@ -50,6 +102,17 @@ void Pwm_SetMatchValue(Pwm_ChannelType Channel , Pwm_ValueType MatchValue){
 
 	
 }
+
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Stop Timer Count 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Pwm_ChannelType Channel	"Timer ID " 
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 
 void Pwm_StopTimer(Pwm_ChannelType Channel){
 
@@ -64,6 +127,17 @@ void Pwm_StopTimer(Pwm_ChannelType Channel){
 	Pwm->GPTMTAMATCHR=0;
 }
 
+
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Disable pwm-Timer Interrupts in Run Time 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	Pwm_ChannelType Channel	"Timer ID "
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 void Pwm_DisableNotification(Pwm_ChannelType Channel){
 
 	volatile Pwm_RegsType*Pwm= (volatile Pwm_RegsType*)Pwm_TimerBaseAddress[Channel];
@@ -77,6 +151,15 @@ void Pwm_DisableNotification(Pwm_ChannelType Channel){
 	((BIT_BANDING(Pwm_Offset , 0x00C , 0)))= 1;           /*CLR_BIT( Gpt->GPTMCTL ,0)........start timer.*/
 
 }
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to Enable Timer Interrupts in Run Time 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	Pwm_ChannelType Channel	"Timer ID "
+*	\Parameters (out):	void
+*************************************************************************************************************************/
 
 void Pwm_EnableNotification(Pwm_ChannelType Channel){
 

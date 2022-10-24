@@ -1,11 +1,11 @@
 /*****************************************************************************************************************************
 *FILE DESCRIPTION
 *-----------------------------------------------------------------------------------------------------------------------------
-*		FILE: Gpio.h
+*	FILE: Gpio.h
 
 *	Module:   Gpio_H
 
-*DESCRIPTION: header file for GPIO Periphral interface
+*	DESCRIPTION: header file for GPIO Periphral interface
 
 *
 *****************************************************************************************************************************/
@@ -13,32 +13,9 @@
 #ifndef GPIO_PORT_H
 #define GPIO_PORT_H
 
-
-
-
-
-#define GPIO_PORTA   0
-
-#define GPIO_PORTB   1
-
-#define GPIO_PORTC   2
-
-#define GPIO_PORTD   3
-
-#define GPIO_PORTE   4
-
-#define GPIO_PORTF   5
-
-/****************************************************************************************************************************
-*	GLOBAL FUNCTION MACROS
-****************************************************************************************************************************/
-
-
-
 /****************************************************************************************************************************
 *	GLOBAL DATA TYPES AND STRUCTURES
 ****************************************************************************************************************************/
-
 typedef enum{
 
 	PPA0 , PPA1 , PPA2 , PPA3 , PPA4 , PPA5 , PPA6 , PPA7 , PPB0 , PPB1 , PPB2 , PPB3 , PPB4 , PPB5 , PPB6 , PPB7,
@@ -89,9 +66,23 @@ typedef struct {
 
 }Port_ConfigType;
 
+
 /****************************************************************************************************************************
-*	GLOBAL DATA PROTOTYPES
+*	GLOBAL CONSTANT MACROS
 ****************************************************************************************************************************/
+
+
+#define GPIO_PORTA   0
+
+#define GPIO_PORTB   1
+
+#define GPIO_PORTC   2
+
+#define GPIO_PORTD   3
+
+#define GPIO_PORTE   4
+
+#define GPIO_PORTF   5
 
 
 
@@ -101,19 +92,21 @@ typedef struct {
 
 
 /****************************************************************************************************************************
-*	\syntax:
-*	\Description     :
-*	\sync\Async      :
-*	\Reentrancy      :
-*	\Parameters (in) :
-*	\Parameters (out):
-*	\Return value	 :
+*	\syntax			 :	C-Language
+*	\Description     :	function to set configuration for all GPIO of Mcu and it's Alternative Functions
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      :	Reentrant
+*	\Parameters (in) :	Pointer to Struct
+*	\Parameters (out):	void 
+*	\Return value	 :	void
 *************************************************************************************************************************/
 
 		void Port_Init(const Port_ConfigType* ConfigPtr );
 		
-#endif 	/*DIO_H*/
+
+#endif 	/*GPIO_PORT_H*/
+
 
 /***************************************************************************************************************************
-*	END OF FILE :Mcu_Hw.h
+*	END OF FILE :Gpio_Port.h
 ***************************************************************************************************************************/

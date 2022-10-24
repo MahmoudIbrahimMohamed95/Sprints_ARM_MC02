@@ -5,13 +5,17 @@
 
 *	Module:   Gpio_DIO_H
 
-*DESCRIPTION: header file for GPIO Periphral interface
+*DESCRIPTION: header file for GPIO_Dio Periphral interface
 
 *
 *****************************************************************************************************************************/
 
 #ifndef GPIO_DIO_H_
 #define GPIO_DIO_H_
+
+/****************************************************************************************************************************
+*	GLOBAL DATA TYPES AND STRUCTURES
+****************************************************************************************************************************/
 
 typedef enum{
 
@@ -39,38 +43,74 @@ typedef uint32 Dio_PortLevelType ;   /* uint32 not uint8 to avoid warning of imp
 
 
 /****************************************************************************************************************************
-*	GLOBAL DATA PROTOTYPES
-****************************************************************************************************************************/
-
-
-/****************************************************************************************************************************
 *	GLOBAL FUNCTION PROTOTYPES
 ****************************************************************************************************************************/
 
+
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to raed any DIO Channel  which takes ID of Channel and return level 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	DIO Channel Type "Enum"
+*	\Parameters (out):	DIO_LevelType
+*************************************************************************************************************************/
+
 Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId);
+
+
+
+/****************************************************************************************************************************
+*	\syntax			 :	void DIO_WriteChannel(Dio_ChannelType ChannelId , Dio_LevelType Level);	
+*	\Description     :  function to write on any Channel"Pin" which takes Pin no. and level 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Channel ID "of type Dio_ChannelType" & DIO Level "of type Dio_Level Type"  
+*	\Parameters (out):	void
+*	\Return value	 :	void
+*************************************************************************************************************************/
 
 void DIO_WriteChannel(Dio_ChannelType ChannelId , Dio_LevelType Level);
 
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to read Port"all of it's Pins Level" 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Port ID "of type Dio_PortType"   
+*	\Parameters (out):	Dio_PortLevel
+*************************************************************************************************************************/
+
 Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId);
+
+
+/****************************************************************************************************************************
+*	\syntax:	
+*	\Description     :  function to write on Port "all of it's Pin" which takes Port Id. and level 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Port ID  & Port Level 
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 
 void Dio_WritePort (Dio_PortType PortId , Dio_PortLevelType Level);
 
-Dio_LevelType Dio_FlipChannel(Dio_ChannelType ChannelId);
-
 /****************************************************************************************************************************
-*	\syntax:
-*	\Description     :
-*	\sync\Async      :
-*	\Reentrancy      :
-*	\Parameters (in) :
-*	\Parameters (out):
-*	\Return value	 :
+*	\syntax:	
+*	\Description     :  function to flip any Channel"Pin" which takes Pin Id 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	Channel ID  
+*	\Parameters (out):	Dio_levelType
 *************************************************************************************************************************/
 
-		/*write function prototype*/
-		
+Dio_LevelType Dio_FlipChannel(Dio_ChannelType ChannelId);
+
 #endif 	/*DIO_H*/
 
 /***************************************************************************************************************************
-*	END OF FILE :Mcu_Hw.h
+*	END OF FILE :GPIO_DIO_h_
 ***************************************************************************************************************************/

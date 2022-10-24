@@ -1,6 +1,23 @@
+/*****************************************************************************************************************************
+*FILE DESCRIPTION
+*-----------------------------------------------------------------------------------------------------------------------------
+*		FILE: Gpt.h
+
+*	Module:   GPT_H_
+
+*DESCRIPTION: header file for General Purpose timer Periphral interface
+
+*
+*****************************************************************************************************************************/
+
+
 #ifndef NVIC_H_
 
 #define NVIC_H_
+
+/****************************************************************************************************************************
+*	GLOBAL DATA TYPES AND STRUCTURES
+****************************************************************************************************************************/
 
 
 typedef enum {
@@ -71,16 +88,90 @@ PeriorityType             Periority;
 }Nvic_ConfigType;
 
 
+/****************************************************************************************************************************
+*	GLOBAL FUNCTION PROTOTYPES
+****************************************************************************************************************************/
+
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Nvic_IntCtrlInit (const Nvic_ConfigType* ConfigPtr  );  
+*	\Description     :  function to set Software Pariority of Interrupts 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	const Nvic_ConfigType*ConfigPtr "Pointer to struct"
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 
 void Nvic_IntCtrlInit (const Nvic_ConfigType* ConfigPtr  );   /*Function To Set Software Priority  */
 
+
+/****************************************************************************************************************************
+*	\syntax          :	void Nvic_IntEnable (IntCtrl_InterruptType InterruptType) 
+*	\Description     :  function to Enable  Interrupts 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	IntCtrl_InterruptType InterruptType
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
+
+
 void Nvic_IntEnable (IntCtrl_InterruptType InterruptType);    /*Function to Enable interrupt */
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Nvic_IntDisable (IntCtrl_InterruptType InterruptType) 
+*	\Description     :  function to Disable  Interrupts 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	IntCtrl_InterruptType InterruptType
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 
 void Nvic_IntDisable (IntCtrl_InterruptType InterruptType);   /*Function to Disable interrupt */
 
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Nvic_SetPendingFlag (IntCtrl_InterruptType InterruptType) 
+*	\Description     :  function to Set Pending Flags of Interrupts 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	IntCtrl_InterruptType InterruptType
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
+
 void Nvic_SetPendingFlag (IntCtrl_InterruptType InterruptType);   /*Function to Set Pending */
 
+
+/****************************************************************************************************************************
+*	\syntax          :	void Nvic_ClearPendingFlag (IntCtrl_InterruptType InterruptType) 
+*	\Description     :  function to Clear Pending Flag of Interrupts 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Non-Reentrant
+*	\Parameters (in) :	IntCtrl_InterruptType InterruptType
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
+
+
 void Nvic_ClearPendingFlag (IntCtrl_InterruptType InterruptType); /*Function to Clear Pending */
+
+
+
+/****************************************************************************************************************************
+*	\syntax          :	void Nvic_TriggerSwInt (IntCtrl_InterruptType InterruptType) 
+*	\Description     :  function to Trigger Software Interrupts 
+*	\sync\Async      :	Synchronous
+*	\Reentrancy      : 	Reentrant
+*	\Parameters (in) :	IntCtrl_InterruptType InterruptType
+*	\Parameters (out):	void
+*************************************************************************************************************************/
+
 
 void Nvic_TriggerSwInt (IntCtrl_InterruptType InterruptType); /*Function to trigger intrepput*/
 
