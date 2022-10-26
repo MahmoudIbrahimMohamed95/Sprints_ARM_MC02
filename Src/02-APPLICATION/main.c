@@ -33,16 +33,16 @@
 
 **********************************************************************************************************************************************/
 
-#define TURN_0N_TIME      5
+int TURN_0N_TIME =5;
 
-#define TURN_OFF_TIME     5
+int TURN_OFF_TIME=5;
 
 /*define externs in main for keil simulator use */
 
-extern Mcu_ConfigType Mcu_Config[2];
-extern Stk_ConfigType Stk_Config;
-extern Pwm_ConfigType Pwm_Config;
-extern Port_ConfigType Port_Config;
+extern Mcu_ConfigType  Mcu_Config[2];
+extern Stk_ConfigType  Stk_Config;
+extern Pwm_ConfigType  Pwm_Config;
+extern Port_ConfigType Port_Config[3];
 
 
 int main(void){
@@ -55,6 +55,8 @@ int main(void){
 
 	}
 	
+
+
 /****************************************************************************************************************************
 *	\syntax:		  : void Port_Init(const Port_ConfigType* ConfigPtr )
 *	\Description     :  function to set configuration for all GPIO of Mcu and it's Alternative Functions 
@@ -65,7 +67,11 @@ int main(void){
 *	\Return value	 :	void
 *************************************************************************************************************************/
 
-	Port_Init(&Port_Config);  
+	for(i=0 ;i<3 ; i++){
+
+		Port_Init(&Port_Config[i]);
+
+	}  
 
 
 /****************************************************************************************************************************
@@ -77,7 +83,7 @@ int main(void){
 *	\Parameters (out):	void
 *************************************************************************************************************************/
 
-/*	Pwm_Init (&Pwm_Config);  */
+		/*	Pwm_Init (&Pwm_Config);  */
 
 
 
@@ -104,19 +110,24 @@ int main(void){
 *	\Return value	 :	void
 *************************************************************************************************************************/
 
-	   
-
 	DIO_WriteChannel(PF3, LOW); 
 
 	while(1){
 
 
-	/*	Pwm_StartTimer(PWM_TIMER1_16_32 , 0xFFF , 0xFFF);*/  
+/*******************************************************FIRST IMPLEMENTATION USING PWM*********************************************************/
+
+
+	/*****************************************************Start PWM***********************************************************/
+
+
+	/*	
+		Pwm_StartTimer(PWM_TIMER1_16_32 , 0xFFF , 0xFFF);
+		
+	*/  
 
 			
-	/*LIGHT LED by increasing duty cycle*/
-
-		DIO_WriteChannel(PF3, HIGH);  
+	/*********************************************LIGHT LED by increasing duty cycle******************************************/
 		
 	/*	for(i=0xFFF ; i > 0 ;i--){
 			
@@ -124,16 +135,9 @@ int main(void){
 			Stk_SetBusyWait(0xFFFF);
 
 		}	
-*/
-		/*ON TIME DURATION*/
-
-		for(i=0;i<=TURN_0N_TIME;i++){
-			
-				Stk_SetBusyWait(12000000);
-		
-		}
-
-		/*DIM LED  by decreasing duty cyle */
+	*/
+	
+	/*************************************************DIM LED  by decreasing duty cyle********************************************/
 
 	/*	
 		for(i=0 ; i < 0xFFF ;i++){
@@ -142,24 +146,61 @@ int main(void){
 			Stk_SetBusyWait(0xFFFF);
 
 		}
-*/
+	*/
+
+	/*************************************************************Stop PWM***********************************************************/
+
+		/*		
+			Pwm_StopTimer(PWM_TIMER1_16_32); 
+	    */  
+
+/*******************************ANOTHER IMPLEMENTATION WITHOUT USING PWM FOR SIMULATION PURPOSE AS WE CAN'T SIMULATE PWM IN KIEL***************/	
 
 
-		/*Stop PWM*/
+/******************************************************CHECKING FOR SW1 STATUS*************************************************/
+	if(Dio_ReadChannel(PA0)==1){
 
-		/*		Pwm_StopTimer(PWM_TIMER1_16_32);  */  
-		
-	Dio_FlipChannel(PF3);
+		Stk_SetBusyWait(240000);  		/*20ms blocking delay to avoid debouncing*/
 
-		/*OFF TIME DURATION*/
-
-	for(i=0; i<=TURN_OFF_TIME ; i++){
+		if(Dio_ReadChannel(PA0)==1){
 			
-				Stk_SetBusyWait(12000000);
-		
+			TURN_0N_TIME++;
+			TURN_OFF_TIME--;
 		}
+	
+	}	
+/******************************************************CHECKING FOR SW2 STATUS*************************************************/	
+	if(Dio_ReadChannel(PA1)==1){
 
-		/*OFF TIME DURATION*/
+		Stk_SetBusyWait(240000);  		/*20ms blocking delay to avoid debouncing*/
+
+		if(Dio_ReadChannel(PA1)==1){
+			
+			TURN_0N_TIME--;
+			TURN_OFF_TIME++;
+		}
+	
+	}	
+/*****************************************************START LIGHTING AND DIMMING LED**********************************************************************/	
+		DIO_WriteChannel(PA2, HIGH); 		
+
+			/*ON TIME DURATION*/
+
+			for(i=0;i<=TURN_0N_TIME;i++){
+			
+					Stk_SetBusyWait(12000000);  		/*1 second blocking delay*/	
+			}
+
+		Dio_FlipChannel(PA2);
+
+				/*OFF TIME DURATION*/
+
+			for(i=0; i<=TURN_OFF_TIME ; i++){
+			
+				Stk_SetBusyWait(12000000);				/*1 second blocking delay*/
+			}
+
+
 	}
 	
 }
